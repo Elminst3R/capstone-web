@@ -10,10 +10,15 @@ function App() {
 
   const fetchCategories = async () => {
     console.log('this will fetch the categories')
-    let res = await fetch(`http://localhost:3000/api/v1/categories`);
-    let data = await res.json();
-    console.log(data);
-    setCategories(data);
+    // let res = await fetch(`http://localhost:3000/api/v1/categories`);
+    // https://c4pstone-api.herokuapp.com/
+
+    console.log(process.env.API_URL)
+
+    // let res = await fetch(`${process.env.API_URL}/api/v1/categories`);
+    // let data = await res.json();
+    // console.log(data);
+    // setCategories(data);
   }
 
   useEffect(() => {
