@@ -1,99 +1,141 @@
 import logo from './logo.svg';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Dashboard from "./dashboard";
+
 import React, { useEffect, useState } from "react";
+
+import { Button, List, Collapse, Breadcrumb, Row, Col, Divider, notification } from 'antd';
+const { Panel } = Collapse;
+
+
+
+function Auth() {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+
+  const onSignIn = async (event) => {
+    event.preventDefault();
+    console.log(email)
+    console.log(password)
+    let res = await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    let data = await res.json();
+    console.log(data);
+    if (data.token) {
+      localStorage.setItem('token', data.token);
+      window.location.href = '/dashboard'
+    }
+
+
+  };
+
+  const onSignUp = async (event) => {
+    event.preventDefault();
+    console.log(email)
+    console.log(password)
+    console.log(retypePassword)
+    let res = await fetch('http://localhost:3000/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    let data = await res.json();
+    console.log(data);
+    if (data.success) {
+      // Show a success message use ANT design success message?
+      notification['success']({
+        message: 'Thanks',
+        description:
+          'You are all set. You can now login using your credentials.',
+      });
+
+    }
+
+  };
+
+  return (
+    <div>
+
+      <h1 className={'text-3xl text-center'}>Login Form</h1>
+
+      <form onSubmit={onSignIn}>
+        <Row type={'flex'} align={'center'} className={'mt-5'}>
+          <Col span={24}>
+            <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Email address'} />
+          </Col>
+          <Col span={24} className={'mt-5'}>
+            <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Password'} />
+          </Col>
+          <Col span={24} className={'mt-5'}>
+            <Button htmlType={'submit'} className={'border-0 bg-edorble-yellow-500 hover:bg-edorble-yellow-600 hover:text-black w-full rounded font-bold'}>Submit</Button>
+          </Col>
+        </Row>
+      </form>
+
+
+      <Divider />
+
+      <h1 className={'text-3xl text-center'}>Signup Form</h1>
+
+      <form onSubmit={onSignUp}>
+        <Row type={'flex'} align={'center'} className={'mt-5'}>
+          <Col span={24}>
+            <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Email address'} />
+          </Col>
+          <Col span={24} className={'mt-5'}>
+            <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Password'} />
+          </Col>
+          <Col span={24} className={'mt-5'}>
+            <input type="password" value={retypePassword} onChange={(ev) => setRetypePassword(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Retype Password'} />
+            {(password != retypePassword) && <small className={'text-red-500 font-bold'}>Passwords don't match</small>}
+          </Col>
+          <Col span={24} className={'mt-5'}>
+            <Button htmlType={'submit'} disabled={password != retypePassword} className={'border-0 bg-edorble-yellow-500 hover:bg-edorble-yellow-600 hover:text-black w-full rounded font-bold'}>Submit</Button>
+            {/*<Button loading={loading} disabled={password != retypePassword} type="primary" htmlType={'submit'} className={'border-0 w-full rounded font-bold'}>Submit</Button>*/}
+          </Col>
+        </Row>
+      </form>
+
+    </div>
+  )
+}
 
 function App() {
 
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState();
-  const [questions, setQuestions] = useState();
-
-  let apiUrl = process.env.REACT_APP_API_URL || `http://localhost:3000/`;
-
-  const fetchCategories = async () => {
-    console.log('this will fetch the categories')
-    // let res = await fetch(`http://localhost:3000/api/v1/categories`);
-    // https://c4pstone-api.herokuapp.com/
-
-    // console.log(process.env.API_URL)
-    // console.log(process.env.REACT_APP_API_URL)
-    console.log(`${apiUrl}api/v1/categories`);
-    let res = await fetch(`${apiUrl}api/v1/categories`);
-    let data = await res.json();
-    console.log(data);
-    setCategories(data);
-  }
-
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  useEffect(() => {
-    // this code is going to run whenever the selectedCategory changes
-    // fetchQuestions() todo: fetch and show the questions
-  }, [selectedCategory])
-
-  const fetchQuestionsForCategory = async (id) => {
-    console.log('fetch questions for this category id', id)
-    let res = await fetch(`http://localhost:3000/api/v1/categories/${id}/questions`);
-    let data = await res.json();
-    console.log(data);
-    setQuestions(data);
-    // setCategories(data);
-  }
-
-  const createNewQuestion = async () => {
-    console.log('create a question for the selected category', selectedCategory)
-    // the ususal fetch request / HINT : look up the stock API request
-
-    // 1. make a POST request to create a question
-    // 2. once the call is successful
-    // 3. fetch the questions for a category again (reload the questions)
-    // 4. done
-  }
 
   return (
-    <>
+    <Router>
+      <div>
 
-      <div className={'grid grid-cols-12'}>
-        <div className={'col-span-full border p-5'} >
-          <h1 className={'text-center text-xl font-bold'}>App Title</h1>
-        </div>
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="/">
+            <Auth />
+          </Route>
+        </Switch>
       </div>
-
-      <div className={'grid grid-cols-12'}>
-        <div className={'col-span-full md:col-span-3 lg:col-span-2 border p-5'} >
-          <h1 className={'text-center text-xl font-bold'}>Currently Selected Category: {selectedCategory}</h1>
-          <ul>
-            {categories.map((category, index) => {
-              return <li key={index} className={category.id == selectedCategory ? 'border p-5 cursor-pointer bg-red-400' : 'border p-5 cursor-pointer'} onClick={() => {
-                setSelectedCategory(category.id)
-                fetchQuestionsForCategory(category.id)
-              }}>
-                {category.name}
-              </li>
-            })}
-          </ul>
-        </div>
-        <div className={'col-span-full md:col-span-9 lg:col-span-10 border p-5'} >
-          <h1 className={'text-center text-xl font-bold'}>BLANK SPACE</h1>
-
-          <button className={'border p-2 pl-4 pr-4 bg-gray-200'} onClick={createNewQuestion}>New Question</button>
-
-          <ul>
-            {questions && questions.map((question) => {
-              return <li key={question.id}>
-                {/* {question.questionTxt} - {question.Answers.length} */}
-                {question.questionTxt} {question.Answers.length > 0 && <span>- <span>{question.Answers.length}</span></span>}
-              </li>
-            })}
-          </ul>
-
-          {/* {questions && <p>{JSON.stringify(questions)}</p>} */}
-        </div>
-      </div>
-
-    </>
+    </Router>
   );
 }
 
