@@ -14,6 +14,7 @@ function App() {
     // https://c4pstone-api.herokuapp.com/
 
     console.log(process.env.API_URL)
+    console.log(process.env.REACT_APP_API_URL)
 
     // let res = await fetch(`${process.env.API_URL}/api/v1/categories`);
     // let data = await res.json();
