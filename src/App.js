@@ -8,18 +8,20 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState();
   const [questions, setQuestions] = useState();
 
+  let apiUrl = process.env.REACT_APP_API_URL || `http://localhost:3000/`;
+
   const fetchCategories = async () => {
     console.log('this will fetch the categories')
     // let res = await fetch(`http://localhost:3000/api/v1/categories`);
     // https://c4pstone-api.herokuapp.com/
 
-    console.log(process.env.API_URL)
-    console.log(process.env.REACT_APP_API_URL)
+    // console.log(process.env.API_URL)
+    // console.log(process.env.REACT_APP_API_URL)
 
-    // let res = await fetch(`${process.env.API_URL}/api/v1/categories`);
-    // let data = await res.json();
-    // console.log(data);
-    // setCategories(data);
+    let res = await fetch(`${apiUrl}/api/v1/categories`);
+    let data = await res.json();
+    console.log(data);
+    setCategories(data);
   }
 
   useEffect(() => {
