@@ -61,7 +61,7 @@ function Auth() {
     if (data.success) {
       // Show a success message use ANT design success message?
       notification['success']({
-        message: 'Thanks',
+        message: 'Thanks!',
         description:
           'You are all set. You can now login using your credentials.',
       });
