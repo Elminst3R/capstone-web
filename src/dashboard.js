@@ -242,8 +242,13 @@ function Dashboard() {
 
           {/* defaultActiveKey={['0']} */}
 
-          {selectedCategory && <Collapse onChange={(key) => {
-            // console.log(key);
+          {selectedCategory && questions && <Collapse onChange={(key) => {
+            if (key == undefined) {
+
+            } else {
+              console.log(key);
+              setSelectedQuestion(questions[key].id)
+            }
           }} accordion>
 
 
