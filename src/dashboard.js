@@ -24,7 +24,6 @@ function Dashboard() {
 
   const fetchCategories = async () => {
     console.log('this will fetch the categories');
-
     // let res = await fetch('http://localhost:3000/api/v1/categories');
     //   https://cohort11a-capstone-api.herokuapp.com
     //   console.log(process.env.API_URL)
@@ -98,13 +97,6 @@ function Dashboard() {
     // setCategories(data);
   };
 
-  // createNewQuestion - done
-  // the usual fetch request / HINT : look up the stock API request
-  // 1. Make a POST request to create a question
-  // 2. Once the call is successful
-  // 3. Fetch the questions for a category again (reload the questions)
-  // 4. done!
-
   const createNewQuestion = async () => {
     // console.log('create a question for the category id', selectedCategory)
     let res = await fetch(`${apiUrl}/api/v1/categories/${selectedCategory}/questions?token=${token}`, {
@@ -139,23 +131,6 @@ function Dashboard() {
     console.log('the selected question.id is', id)
     window.location.reload();
   }
-
-  // createANewAnswer - done
-  // you will need something called selectedQuestion to keep a track of the question that has been selected
-  // a state variable to store the answer text that the user types in
-
-  // the usual fetch request / HINT : look up the stock API request
-  // 1. Make a POST request to create an answer
-  // 2. Once the call is successful
-  // 3. Fetch the questions for a category again (reload the questions)
-  // 4. done!
-
-  // - Try to delete the question
-  // Try to delete an answer
-
-  // /categories/:categoryId/questions/:questionId/answers
-
-  // 1. Hide the Ui unless the user is logged in - done
 
   const logout = async () => {
     localStorage.removeItem('token');
@@ -288,5 +263,29 @@ function Dashboard() {
     </>
   );
 }
+
+// createNewQuestion - done
+// the usual fetch request / HINT : look up the stock API request
+// 1. Make a POST request to create a question
+// 2. Once the call is successful
+// 3. Fetch the questions for a category again (reload the questions)
+// 4. done!
+
+// createANewAnswer - done
+// you will need something called selectedQuestion to keep a track of the question that has been selected
+// a state variable to store the answer text that the user types in
+
+// the usual fetch request / HINT : look up the stock API request
+// 1. Make a POST request to create an answer
+// 2. Once the call is successful
+// 3. Fetch the questions for a category again (reload the questions)
+// 4. done!
+
+// - Try to delete the question
+// Try to delete an answer
+
+// /categories/:categoryId/questions/:questionId/answers
+
+// 1. Hide the Ui unless the user is logged in - done
 
 export default Dashboard;
