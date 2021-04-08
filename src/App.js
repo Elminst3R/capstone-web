@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -100,7 +99,7 @@ function Auth() {
                 <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Your Password'} />
               </Col>
               <Col span={24} className={'mt-5'}>
-                <button htmlType={'submit'} className={'border-0 text-white bg-green-400 text-xl hover:text-black w-full rounded font-bold p-2'}>Submit</button>
+                <button htmlType={'submit'} className={'border-0 text-white bg-green-400 text-xl hover:text-gray-900 hover:bg-green-500 w-full rounded font-bold p-2'}>Submit</button>
               </Col>
             </Row>
           </form>
@@ -128,7 +127,7 @@ function Auth() {
                 {(password != retypePassword) && <small className={'text-red-500 font-bold'}>Passwords don't match</small>}
               </Col>
               <Col span={24} className={'mt-5'}>
-                <button htmlType={'submit'} disabled={password != retypePassword} className={'border-0 text-white bg-green-400 text-xl hover:text-black w-full rounded font-bold p-2'}>Submit</button>
+                <button htmlType={'submit'} disabled={password != retypePassword} className={'border-0 text-white bg-green-400 text-xl hover:text-gray-900 hover:bg-green-500 w-full rounded font-bold p-2'}>Submit</button>
                 {/*<Button loading={loading} disabled={password != retypePassword} type="primary" htmlType={'submit'} className={'border-0 w-full rounded font-bold'}>Submit</Button>*/}
               </Col>
             </Row>

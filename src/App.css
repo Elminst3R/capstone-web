@@ -4,6 +4,24 @@ body {
   background:#F9FAFB;
 }
 
+/* .antCollapse {
+  background:#F9FAFB;
+} */
+
+[data-theme='compact'] .site-collapse-custom-collapse .site-collapse-custom-panel,
+.site-collapse-custom-collapse .site-collapse-custom-panel {
+  /* margin-bottom: 24px; */
+  overflow: hidden;
+  background: #F9FAFB;
+  border: 0px;
+  /* border-radius: 2px; */
+}
+
+[data-theme="dark"] .site-collapse-custom-collapse .site-collapse-custom-panel {
+  background: rgba(255,255,255,0.04);
+  border: 0px;
+}
+
 /* .App {
   text-align: center;
 }
@@ -43,7 +61,7 @@ body {
   }
 } */
 
-.tab-list {  border-bottom: 1px solid #ccc;
+/* .tab-list {  border-bottom: 1px solid #ccc;
   padding-left: 0;
 }
 
@@ -58,4 +76,4 @@ body {
   background-color: white;
   border: solid #ccc;
   border-width: 1px 1px 0 1px;
-}
+} */

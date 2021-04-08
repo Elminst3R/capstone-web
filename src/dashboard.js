@@ -1,11 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 
 import React, { useEffect, useState } from "react";
 
-import { Button, List, Collapse, Breadcrumb } from 'antd';
-const { Panel } = Collapse;
+import { Button, List, Collapse } from 'antd';
 
+const { Panel } = Collapse;
 
 function Dashboard() {
 
@@ -167,18 +166,17 @@ function Dashboard() {
   return (
     <>
       {selectedToken && <div className="grid grid-cols-12">
-        <div className={'col-span-full border p-5'}>
-          <h1 className={'text-center text-3xl'}>
-            C4pstone App
-
-                        &nbsp;&nbsp;<Button type="primary" className={'float-right'} onClick={logout}>Logout</Button>
+        <div className={'col-span-full p-5'}>
+          <h1 >
+            <div className={'bg-green-500 rounded font-bold text-2xl p-4 text-white text-center'}>C4pstone App
+            <Button type="primary" className={'float-right'} onClick={logout}>Logout</Button></div>
           </h1>
         </div>
 
       </div>}
 
       {selectedToken && <div className="grid grid-cols-12">
-        <div className={'col-span-full md:col-span-3 lg:col-span-2 border p-5'}>
+        <div className={'col-span-full md:col-span-3 lg:col-span-2 p-5 rounded'}>
 
           {/*<Button type={'primary'}>Submit</Button>*/}
           {/*<h1 className={'text-center text-3xl'}>Currently selected category is: {selectedCategory}</h1>*/}
@@ -195,12 +193,12 @@ function Dashboard() {
 
           <List
             size="large"
-            header={<div className={'font-bold'}>Categories</div>}
+            header={<div className={'font-bold text-xl bg-green-500 rounded p-2 text-white'}>Categories</div>}
             // footer={<div>Footer</div>}
-            bordered
+            // bordered
             dataSource={categories}
             renderItem={category => <List.Item>
-              <div className={category.id == selectedCategory ? 'cursor-pointer text-blue-500 font-bold' : 'cursor-pointer'} onClick={() => {
+              <div className={category.id == selectedCategory ? 'bg-green-500 rounded cursor-pointer font-bold text-xl p-2 w-full text-white' : 'cursor-pointer text-lg text-black'} onClick={() => {
                 setSelectedCategory(category.id);
                 fetchQuestionsForCategory(category.id)
               }}>
@@ -212,13 +210,13 @@ function Dashboard() {
 
         </div>
 
-        <div className={'col-span-full md:col-span-9 lg:col-span-10 border p-5'}>
+        <div className={'col-span-full md:col-span-9 lg:col-span-10 p-5'}>
 
           {selectedCategory && <div>
             <input value={questionTxt} onChange={(ev) => {
               setQuestionTxt(ev.currentTarget.value);
             }} type="text" className={'border p-1 mr-5 w-2/3'} />
-            <Button type={'primary'} onClick={createNewQuestion}>New Question</Button>
+            <Button type={'primary'} style={{ background: "#10B981", borderColor: "#34D399" }} onClick={createNewQuestion}>New Question</Button>
             <br />
             <br />
           </div>}
@@ -246,29 +244,30 @@ function Dashboard() {
               setSelectedQuestion(questions[key].id)
               fetchAnswerForQuestion(questions[key].id)
             }
-          }} accordion>
+          }} accordion className={'site-collapse-custom-collapse'}>
 
+            {/* style={{ border: "none", borderRadius: "0px", backgroundColor: "#F9FAFB", boxShadow: "none", background: "#F9FAFB" }} */}
 
             {questions && questions.map((question, index) => {
-              return <Panel header={<div>{question.questionTxt}<Button onClick={() => {
+              return <Panel header={<div className={'text-xl'}>{question.questionTxt}<Button onClick={() => {
                 setSelectedQuestion(question.id)
                 deleteQuestion(question.id)
-              }} className={'float-right'} type={'danger'}>Delete</Button></div>} key={index}>
+              }} className={'float-right'} type={'danger'}>Delete</Button></div>} key={index} className={'site-collapse-custom-panel'}>
                 {/* {console.log(question.questionTxt)} */}
 
-                <List
+                <List className={'site-collapse-custom-panel'}
                   size="small"
-                  header={<div className={'font-bold'}>Answers</div>}
+                  header={<div className={'font-bold text-xl ml-4'}>Answers</div>}
                   footer={<div>
                     <input value={answerTxt} onChange={(ev) => {
                       setAnswerTxt(ev.currentTarget.value);
-                    }} type="text" className={'border p-1 mr-5 w-1/2'} />
-                    <Button type={'primary'} onClick={createANewAnswer}>Add Answer</Button>
+                    }} type="text" className={'border p-1 mr-5 w-1/2 ml-4'} />
+                    <Button type={'primary'} style={{ background: "#10B981", borderColor: "#34D399" }} onClick={createANewAnswer}>Add Answer</Button>
                   </div>}
-                  bordered
+                  // bordered
                   dataSource={answers}
                   renderItem={answer => <List.Item>
-                    <div>
+                    <div className={'text-xl'}>
                       {answer.answerTxt}
                     </div>
                   </List.Item>}
