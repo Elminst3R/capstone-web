@@ -13,6 +13,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Collapse, Row, Col, notification, Tabs, Radio, Space } from 'antd';
 const { TabPane } = Tabs;
 
+let apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000/';
+
 function Auth() {
 
   const [email, setEmail] = useState('');
@@ -36,7 +38,7 @@ function Auth() {
     event.preventDefault();
     console.log(email)
     console.log(password)
-    let res = await fetch('http://localhost:3000/login', {
+    let res = await fetch(`${apiUrl}login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -57,7 +59,7 @@ function Auth() {
     console.log(email)
     console.log(password)
     console.log(retypePassword)
-    let res = await fetch('http://localhost:3000/signup', {
+    let res = await fetch(`${apiUrl}signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -91,11 +93,11 @@ function Auth() {
             <Row type={'flex'} align={'center'} className={'mt-5 p-10 border-1 border-green-400 p-8 border-t-8 bg-white mb-6 rounded-lg shadow-lg'}>
               <Col span={24}>
                 <h2 className={'text-xl font-bold'}>Username or Email</h2>
-                <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Email address'} />
+                <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Your Username'} />
               </Col>
               <Col span={24} className={'mt-5'}>
                 <h2 className={'text-xl font-bold'}>Password</h2>
-                <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Password'} />
+                <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Your Password'} />
               </Col>
               <Col span={24} className={'mt-5'}>
                 <button htmlType={'submit'} className={'border-0 text-white bg-green-400 text-xl hover:text-black w-full rounded font-bold p-2'}>Submit</button>
@@ -115,14 +117,14 @@ function Auth() {
             <Row type={'flex'} align={'center'} className={'mt-5 p-10 border-1 border-green-400 p-8 border-t-8 bg-white mb-6 rounded-lg shadow-lg'}>
               <Col span={24}>
                 <h2 className={'text-xl font-bold'}>Username or Email</h2>
-                <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Email address'} />
+                <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Your Username'} />
               </Col>
               <Col span={24} className={'mt-5'}>
                 <h2 className={'text-xl font-bold'}>Password</h2>
-                <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Password'} />
+                <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Your Password'} />
               </Col>
               <Col span={24} className={'mt-5'}>
-                <input type="password" value={retypePassword} onChange={(ev) => setRetypePassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Retype Password'} />
+                <input type="password" value={retypePassword} onChange={(ev) => setRetypePassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Retype Your Password'} />
                 {(password != retypePassword) && <small className={'text-red-500 font-bold'}>Passwords don't match</small>}
               </Col>
               <Col span={24} className={'mt-5'}>
