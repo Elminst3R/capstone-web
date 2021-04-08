@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Collapse, Row, Col, notification, Tabs, Radio, Space } from 'antd';
 const { TabPane } = Tabs;
 
-let apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000/';
+let apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 function Auth() {
 
@@ -37,7 +37,7 @@ function Auth() {
     event.preventDefault();
     console.log(email)
     console.log(password)
-    let res = await fetch(`${apiUrl}login`, {
+    let res = await fetch(`${apiUrl}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ function Auth() {
     console.log(email)
     console.log(password)
     console.log(retypePassword)
-    let res = await fetch(`${apiUrl}signup`, {
+    let res = await fetch(`${apiUrl}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

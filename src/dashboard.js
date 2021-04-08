@@ -19,7 +19,7 @@ function Dashboard() {
   const [answerTxt, setAnswerTxt] = useState();
   const [answers, setAnswers] = useState();
 
-  let apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000/';
+  let apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 
   const fetchCategories = async () => {
@@ -30,14 +30,14 @@ function Dashboard() {
     //   console.log(process.env.API_URL)
     //   console.log(process.env.REACT_APP_API_URL)
     console.log(`${apiUrl}/api/v1/categories`)
-    let res = await fetch(`${apiUrl}api/v1/categories?token=${localStorage.getItem('token')}`);
+    let res = await fetch(`${apiUrl}/api/v1/categories?token=${localStorage.getItem('token')}`);
     let data = await res.json();
     console.log(data);
     setCategories(data);
   };
 
   const fetchUserId = async () => {
-    let userRes = await fetch(`${apiUrl}api/v1/users/me?token=${localStorage.getItem('token')}`);
+    let userRes = await fetch(`${apiUrl}/api/v1/users/me?token=${localStorage.getItem('token')}`);
     let u = await userRes.json()
     console.log('the current user is', u);
     setUserId(u.userId);
@@ -80,7 +80,7 @@ function Dashboard() {
 
   const fetchAnswerForQuestion = async (id) => {
     // console.log('fetch this answer id', id);
-    let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions/${id}/answers?token=${token}&userId=${userId}`);
+    let res = await fetch(`${apiUrl}/api/v1/categories/${selectedCategory}/questions/${id}/answers?token=${token}&userId=${userId}`);
     let data = await res.json();
     // console.log(data);
     data = data.reverse()
@@ -90,7 +90,7 @@ function Dashboard() {
   const fetchQuestionsForCategory = async (id) => {
     // console.log('fetch questions for this category id', id);
     // console.log('userId', userId)
-    let res = await fetch(`${apiUrl}api/v1/categories/${id}/questions?token=${token}&userId=${userId}`);
+    let res = await fetch(`${apiUrl}/api/v1/categories/${id}/questions?token=${token}&userId=${userId}`);
     let data = await res.json();
     // console.log(data);
     data = data.reverse()
@@ -107,7 +107,7 @@ function Dashboard() {
 
   const createNewQuestion = async () => {
     // console.log('create a question for the category id', selectedCategory)
-    let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions?token=${token}`, {
+    let res = await fetch(`${apiUrl}/api/v1/categories/${selectedCategory}/questions?token=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -121,7 +121,7 @@ function Dashboard() {
 
   const createANewAnswer = async () => {
     console.log('create a new answer for this question id', selectedQuestion)
-    let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions/${selectedQuestion}/answers?token=${token}`, {
+    let res = await fetch(`${apiUrl}/api/v1/categories/${selectedCategory}/questions/${selectedQuestion}/answers?token=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -134,7 +134,7 @@ function Dashboard() {
   };
 
   const deleteQuestion = async (id) => {
-    fetch(`http://localhost:3000/api/v1/categories/${selectedCategory}/questions/${id}?token=${token}`, { method: 'DELETE' })
+    fetch(`${apiUrl}/api/v1/categories/${selectedCategory}/questions/${id}?token=${token}`, { method: 'DELETE' })
     console.log('the selected category.id is', selectedCategory)
     console.log('the selected question.id is', id)
     window.location.reload();
