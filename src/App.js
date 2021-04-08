@@ -10,16 +10,27 @@ import Dashboard from "./dashboard";
 
 import React, { useEffect, useState } from "react";
 
-import { Button, List, Collapse, Breadcrumb, Row, Col, Divider, notification } from 'antd';
-const { Panel } = Collapse;
-
-
+import { Button, Collapse, Row, Col, notification, Tabs, Radio, Space } from 'antd';
+const { TabPane } = Tabs;
 
 function Auth() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
+  const [login, setLogin] = useState('');
+
+
+  useEffect(() => {
+    // this code will run only once on component mount
+    if (login) {
+
+      setLogin(true)
+    } else {
+
+      setLogin(false)
+    }
+  }, [])
 
   const onSignIn = async (event) => {
     event.preventDefault();
@@ -39,8 +50,6 @@ function Auth() {
       localStorage.setItem('token', data.token);
       window.location.href = '/dashboard'
     }
-
-
   };
 
   const onSignUp = async (event) => {
@@ -65,61 +74,72 @@ function Auth() {
         description:
           'You are all set. You can now login using your credentials.',
       });
-
     }
-
   };
 
   return (
-    <div>
 
-      <h1 className={'text-3xl text-center'}>Login Form</h1>
+    <div className={'container mx-auto h-full flex justify-center items-center'}>
 
-      <form onSubmit={onSignIn}>
-        <Row type={'flex'} align={'center'} className={'mt-5'}>
-          <Col span={24}>
-            <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Email address'} />
-          </Col>
-          <Col span={24} className={'mt-5'}>
-            <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Password'} />
-          </Col>
-          <Col span={24} className={'mt-5'}>
-            <Button htmlType={'submit'} className={'border-0 bg-edorble-yellow-500 hover:bg-edorble-yellow-600 hover:text-black w-full rounded font-bold'}>Submit</Button>
-          </Col>
-        </Row>
-      </form>
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="Login" key="1">
+
+          <form onSubmit={onSignIn}>
+
+            <h1 className={'text-4xl text-center font-bold'}>Login to C4pstone</h1>
+
+            <Row type={'flex'} align={'center'} className={'mt-5 p-10 border-1 border-green-400 p-8 border-t-8 bg-white mb-6 rounded-lg shadow-lg'}>
+              <Col span={24}>
+                <h2 className={'text-xl font-bold'}>Username or Email</h2>
+                <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Email address'} />
+              </Col>
+              <Col span={24} className={'mt-5'}>
+                <h2 className={'text-xl font-bold'}>Password</h2>
+                <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Password'} />
+              </Col>
+              <Col span={24} className={'mt-5'}>
+                <button htmlType={'submit'} className={'border-0 text-white bg-green-400 text-xl hover:text-black w-full rounded font-bold p-2'}>Submit</button>
+              </Col>
+            </Row>
+          </form>
+        </TabPane>
+
+        <TabPane tab="Don't have an Account? Click Here!" key="2">
 
 
-      <Divider />
 
-      <h1 className={'text-3xl text-center'}>Signup Form</h1>
+          <form onSubmit={onSignUp}>
 
-      <form onSubmit={onSignUp}>
-        <Row type={'flex'} align={'center'} className={'mt-5'}>
-          <Col span={24}>
-            <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Email address'} />
-          </Col>
-          <Col span={24} className={'mt-5'}>
-            <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Password'} />
-          </Col>
-          <Col span={24} className={'mt-5'}>
-            <input type="password" value={retypePassword} onChange={(ev) => setRetypePassword(ev.currentTarget.value)} required className={'border w-full rounded'} placeholder={'Retype Password'} />
-            {(password != retypePassword) && <small className={'text-red-500 font-bold'}>Passwords don't match</small>}
-          </Col>
-          <Col span={24} className={'mt-5'}>
-            <Button htmlType={'submit'} disabled={password != retypePassword} className={'border-0 bg-edorble-yellow-500 hover:bg-edorble-yellow-600 hover:text-black w-full rounded font-bold'}>Submit</Button>
-            {/*<Button loading={loading} disabled={password != retypePassword} type="primary" htmlType={'submit'} className={'border-0 w-full rounded font-bold'}>Submit</Button>*/}
-          </Col>
-        </Row>
-      </form>
+            <h1 className={'text-4xl text-center font-bold'}>Sign Up - It's quick and easy.</h1>
+
+            <Row type={'flex'} align={'center'} className={'mt-5 p-10 border-1 border-green-400 p-8 border-t-8 bg-white mb-6 rounded-lg shadow-lg'}>
+              <Col span={24}>
+                <h2 className={'text-xl font-bold'}>Username or Email</h2>
+                <input type="email" value={email} onChange={(ev) => setEmail(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Email address'} />
+              </Col>
+              <Col span={24} className={'mt-5'}>
+                <h2 className={'text-xl font-bold'}>Password</h2>
+                <input type="password" value={password} onChange={(ev) => setPassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Password'} />
+              </Col>
+              <Col span={24} className={'mt-5'}>
+                <input type="password" value={retypePassword} onChange={(ev) => setRetypePassword(ev.currentTarget.value)} required className={'border w-full rounded p-2'} placeholder={'Retype Password'} />
+                {(password != retypePassword) && <small className={'text-red-500 font-bold'}>Passwords don't match</small>}
+              </Col>
+              <Col span={24} className={'mt-5'}>
+                <button htmlType={'submit'} disabled={password != retypePassword} className={'border-0 text-white bg-green-400 text-xl hover:text-black w-full rounded font-bold p-2'}>Submit</button>
+                {/*<Button loading={loading} disabled={password != retypePassword} type="primary" htmlType={'submit'} className={'border-0 w-full rounded font-bold'}>Submit</Button>*/}
+              </Col>
+            </Row>
+          </form>
+        </TabPane>
+      </Tabs>
 
     </div>
+
   )
 }
 
 function App() {
-
-
   return (
     <Router>
       <div>

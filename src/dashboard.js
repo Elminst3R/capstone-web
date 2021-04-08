@@ -79,35 +79,35 @@ function Dashboard() {
   //   // write code here that reloads the page as a side effect of var2 OR someStateVariable changing
   // }, [someStateVariable, var2])
 
-
-  // router.get('/categories/:categoryId/questions/:questionId/answers', async function (req, res, next) {
-  //   let answers = await Answer.findAll({ where: { questionId: req.params.questionId } });
-  //   res.json(answers);
-  // });
-
-  // const fetchAnswerForQuestion = async (id) => {
-  //   let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions/${id}/answers?token=${token}&userId=${userId}`);
-  //   let data = await res.json();
-  //   console.log(data);
-  //   data = data.reverse()
-  //   setAnswers(data);
-  // }
+  const fetchAnswerForQuestion = async (id) => {
+    // console.log('fetch this answer id', id);
+    let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions/${id}/answers?token=${token}&userId=${userId}`);
+    let data = await res.json();
+    // console.log(data);
+    data = data.reverse()
+    setAnswers(data);
+  }
 
   const fetchQuestionsForCategory = async (id) => {
-    console.log('fetch questions for this category id', id);
-    console.log('userId', userId)
+    // console.log('fetch questions for this category id', id);
+    // console.log('userId', userId)
     let res = await fetch(`${apiUrl}api/v1/categories/${id}/questions?token=${token}&userId=${userId}`);
     let data = await res.json();
-    console.log(data);
+    // console.log(data);
     data = data.reverse()
     setQuestions(data);
     // setCategories(data);
-
   };
 
-  const createNewQuestion = async () => {
-    console.log('create a question for the category id', selectedCategory)
+  // createNewQuestion - done
+  // the usual fetch request / HINT : look up the stock API request
+  // 1. Make a POST request to create a question
+  // 2. Once the call is successful
+  // 3. Fetch the questions for a category again (reload the questions)
+  // 4. done!
 
+  const createNewQuestion = async () => {
+    // console.log('create a question for the category id', selectedCategory)
     let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions?token=${token}`, {
       method: 'POST',
       headers: {
@@ -118,16 +118,30 @@ function Dashboard() {
     });
     fetchQuestionsForCategory(selectedCategory);
     setQuestionTxt('')
-
-    // the usual fetch request / HINT : look up the stock API request
-    // 1. Make a POST request to create a question
-    // 2. Once the call is successful
-    // 3. Fetch the questions for a category again (reload the questions)
-    // 4. done!
   };
 
+  const createANewAnswer = async () => {
+    console.log('create a new answer for this question id', selectedQuestion)
+    let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions/${selectedQuestion}/answers?token=${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({ answerTxt: answerTxt, userId: userId })
+    });
+    fetchAnswerForQuestion(selectedQuestion)
+    setAnswerTxt('')
+  };
 
-  // createANewAnswer
+  const deleteQuestion = async (id) => {
+    fetch(`http://localhost:3000/api/v1/categories/${selectedCategory}/questions/${id}?token=${token}`, { method: 'DELETE' })
+    console.log('the selected category.id is', selectedCategory)
+    console.log('the selected question.id is', id)
+    window.location.reload();
+  }
+
+  // createANewAnswer - done
   // you will need something called selectedQuestion to keep a track of the question that has been selected
   // a state variable to store the answer text that the user types in
 
@@ -137,36 +151,18 @@ function Dashboard() {
   // 3. Fetch the questions for a category again (reload the questions)
   // 4. done!
 
+  // - Try to delete the question
+  // Try to delete an answer
+
   // /categories/:categoryId/questions/:questionId/answers
-  const createANewAnswer = async () => {
-    console.log('create a new answer for this question id', selectedQuestion)
-    let res = await fetch(`${apiUrl}api/v1/categories/${selectedCategory}/questions/${selectedQuestion}/answers?token=${token}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify({ answerTxt: answerTxt })
-    });
-    // fetchAnswerForQuestion(selectedQuestion)
-    setAnswerTxt('')
 
-
-    // - Try to delete the question
-    // Try to delete an answer
-  };
+  // 1. Hide the Ui unless the user is logged in - done
 
   const logout = async () => {
     localStorage.removeItem('token');
     window.location.href = '/';
 
   };
-
-  // function callback(key) {
-  //   console.log(key);
-  // }
-
-  // 1. Hide the Ui unless the user is logged in - done
 
   return (
     <>
@@ -175,7 +171,7 @@ function Dashboard() {
           <h1 className={'text-center text-3xl'}>
             C4pstone App
 
-                        &nbsp;&nbsp;<Button onClick={logout}>Log out</Button>
+                        &nbsp;&nbsp;<Button type="primary" className={'float-right'} onClick={logout}>Logout</Button>
           </h1>
         </div>
 
@@ -199,7 +195,7 @@ function Dashboard() {
 
           <List
             size="large"
-            header={<div className={'font-bold'}>Categories List</div>}
+            header={<div className={'font-bold'}>Categories</div>}
             // footer={<div>Footer</div>}
             bordered
             dataSource={categories}
@@ -222,7 +218,7 @@ function Dashboard() {
             <input value={questionTxt} onChange={(ev) => {
               setQuestionTxt(ev.currentTarget.value);
             }} type="text" className={'border p-1 mr-5 w-2/3'} />
-            <Button type={'primary'} onClick={createNewQuestion}>Create new question</Button>
+            <Button type={'primary'} onClick={createNewQuestion}>New Question</Button>
             <br />
             <br />
           </div>}
@@ -244,24 +240,25 @@ function Dashboard() {
 
           {selectedCategory && questions && <Collapse onChange={(key) => {
             if (key == undefined) {
-
+              // if the panel is collapsed, do not assign a new .id to setSelectedQuestion / otherwise error
             } else {
-              console.log(key);
+              // console.log(key);
               setSelectedQuestion(questions[key].id)
+              fetchAnswerForQuestion(questions[key].id)
             }
           }} accordion>
 
 
             {questions && questions.map((question, index) => {
-              return <Panel header={<div className={'border'} style={{ backgroundColor: "red", position: "relative", width: "100%", left: "0", padding: "10px" }} onClick={() => {
+              return <Panel header={<div>{question.questionTxt}<Button onClick={() => {
                 setSelectedQuestion(question.id)
-                // fetchAnswerForQuestion(question.id)
-              }}>{question.questionTxt}</div>} key={index}>
-
+                deleteQuestion(question.id)
+              }} className={'float-right'} type={'danger'}>Delete</Button></div>} key={index}>
+                {/* {console.log(question.questionTxt)} */}
 
                 <List
                   size="small"
-                  // header={<div className={'font-bold'}>Answers List</div>}
+                  header={<div className={'font-bold'}>Answers</div>}
                   footer={<div>
                     <input value={answerTxt} onChange={(ev) => {
                       setAnswerTxt(ev.currentTarget.value);
@@ -269,7 +266,7 @@ function Dashboard() {
                     <Button type={'primary'} onClick={createANewAnswer}>Add Answer</Button>
                   </div>}
                   bordered
-                  dataSource={question.Answers}
+                  dataSource={answers}
                   renderItem={answer => <List.Item>
                     <div>
                       {answer.answerTxt}
@@ -282,7 +279,7 @@ function Dashboard() {
             })}
           </Collapse>}
 
-          {!selectedCategory && <h1 className={'text-center text-xl uppercase tracking-wider text-blue-500'}>Select a category to get started</h1>}
+          {!selectedCategory && <h1 className={'text-center text-xl uppercase tracking-wider text-blue-500'}>Select a Category to Get Started</h1>}
 
           {/*{questions && <p>{JSON.stringify(questions)}</p>}*/}
         </div>
